@@ -27,8 +27,6 @@ for mobile "https://github.com/divyansiranpariya/Galaxy"
 
 https://github.com/user-attachments/assets/1a6dfdb1-89e2-4b1a-b3e8-64ccd9a97280
 
-
-
 ##Screenshorts
 ![s1](https://github.com/user-attachments/assets/6fc76b46-d426-44e4-9039-81d1fd3439b0)
 ![s2](https://github.com/user-attachments/assets/ca475aff-8e29-4d9d-9356-4f3bc5482570)
