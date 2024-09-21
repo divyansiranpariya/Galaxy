@@ -4,10 +4,12 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../provider/liked_provider.dart';
 import '../utils/global.dart';
@@ -147,16 +149,28 @@ class _DetailPageState extends State<DetailPage> {
                             Row(
                               children: [
                                 IconButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     Provider.of<FavouriteProvider>(context,
                                             listen: false)
                                         .addData(map: alldata);
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setStringList(
+                                        'name', alldata['name']);
                                   },
-                                  icon: Icon(
-                                    Icons.favorite_border,
-                                    color: Colors.white70,
-                                    size: 25,
-                                  ),
+                                  icon: (Provider.of<FavouriteProvider>(context,
+                                              listen: false)
+                                          .isliked)
+                                      ? Icon(
+                                          Icons.favorite,
+                                          color: Colors.white70,
+                                          size: 25,
+                                        )
+                                      : Icon(
+                                          Icons.favorite_border,
+                                          color: Colors.white70,
+                                          size: 25,
+                                        ),
                                 ),
                                 IconButton(
                                   onPressed: () {
@@ -164,6 +178,14 @@ class _DetailPageState extends State<DetailPage> {
                                   },
                                   icon: Icon(
                                     Icons.share,
+                                    color: Colors.white70,
+                                    size: 25,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () async {},
+                                  icon: Icon(
+                                    Icons.save_alt,
                                     color: Colors.white70,
                                     size: 25,
                                   ),
@@ -177,7 +199,7 @@ class _DetailPageState extends State<DetailPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              height: 50,
+                              height: 170,
                               width: 300,
                               decoration: BoxDecoration(
                                 color: Colors.white70.withOpacity(0.1),
@@ -185,84 +207,58 @@ class _DetailPageState extends State<DetailPage> {
                                   Radius.circular(10),
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text(
-                                    "Position",
-                                    style: Textstyling.title,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Position",
+                                        style: Textstyling.title,
+                                      ),
+                                      SizedBox(width: 20),
+                                      Text(
+                                        alldata['position'],
+                                        style: Textstyling.subtitle,
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(width: 20),
-                                  Text(
-                                    alldata['position'],
-                                    style: Textstyling.subtitle,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Velocity",
+                                        style: Textstyling.title,
+                                      ),
+                                      SizedBox(width: 20),
+                                      Text(
+                                        alldata['velocity'],
+                                        style: Textstyling.subtitle,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Distance",
+                                        style: Textstyling.title,
+                                      ),
+                                      SizedBox(width: 20),
+                                      Text(
+                                        alldata['distance'],
+                                        style: Textstyling.subtitle,
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 15),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 300,
-                              decoration: BoxDecoration(
-                                color: Colors.white70.withOpacity(0.1),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Velocity",
-                                    style: Textstyling.title,
-                                  ),
-                                  SizedBox(width: 20),
-                                  Text(
-                                    alldata['velocity'],
-                                    style: Textstyling.subtitle,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 300,
-                              decoration: BoxDecoration(
-                                color: Colors.white70.withOpacity(0.1),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Distance",
-                                    style: Textstyling.title,
-                                  ),
-                                  SizedBox(width: 20),
-                                  Text(
-                                    alldata['distance'],
-                                    style: Textstyling.subtitle,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 40),
                         ReadMoreText(
                           alldata['description'],
                           style: TextStyle(

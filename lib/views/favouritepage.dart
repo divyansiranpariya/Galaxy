@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:galaxy/provider/liked_provider.dart';
 import 'package:galaxy/utils/global.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Favouritepage extends StatefulWidget {
   const Favouritepage({super.key});
@@ -37,96 +38,106 @@ class _FavouritepageState extends State<Favouritepage> {
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                 itemBuilder: (context, i) {
                   var item = favouriteItems[i];
-                  return Container(
-                    height: 200,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF1A1D24).withOpacity(0.7),
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 30, left: 12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Position:",
-                                      style: Textstyling.title,
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      "${item['position']}",
-                                      style: Textstyling.subtitle,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Name:",
-                                      style: Textstyling.title,
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      "${item['name']}",
-                                      style: Textstyling.subtitle,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Velocity:",
-                                      style: Textstyling.title,
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      "${item['velocity']}",
-                                      style: Textstyling.subtitle,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        favouriteProvider.removeData(map: item);
-                                      },
-                                      icon: Icon(
-                                        Icons.favorite,
-                                        color: Colors.red,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed('Detail_page', arguments: item);
+                    },
+                    child: Container(
+                      height: 200,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1A1D24).withOpacity(0.7),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 30, left: 12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${Textstyling.savename}",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Position:",
+                                        style: Textstyling.title,
                                       ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.share,
-                                        color: Colors.white70,
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "${item['position']}",
+                                        style: Textstyling.subtitle,
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(item['image']),
-                                fit: BoxFit.cover,
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Name:",
+                                        style: Textstyling.title,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "${item['name']}",
+                                        style: Textstyling.subtitle,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Velocity:",
+                                        style: Textstyling.title,
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "${item['velocity']}",
+                                        style: Textstyling.subtitle,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            favouriteProvider.removeData(
+                                                map: item);
+                                          },
+                                          icon: Icon(
+                                            Icons.favorite,
+                                            color: Colors.red,
+                                          )),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.share,
+                                          color: Colors.white70,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(item['image']),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
